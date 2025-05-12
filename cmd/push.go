@@ -55,6 +55,7 @@ func init() {
 	flags.BoolVar(&pushConfig.PlainHTTP, "plain-http", false, "use plain HTTP instead of HTTPS")
 	flags.BoolVar(&pushConfig.Insecure, "insecure", false, "turning on this flag will disable TLS verification")
 	flags.BoolVar(&pushConfig.Nydusify, "nydusify", false, "[EXPERIMENTAL] nydusify the model artifact")
+	flags.StringVar(&pushConfig.Token, "token", "", "specify the access token of repository for the push operation")
 	flags.MarkHidden("nydusify")
 
 	if err := viper.BindPFlags(flags); err != nil {

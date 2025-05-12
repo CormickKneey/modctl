@@ -28,6 +28,7 @@ type Push struct {
 	PlainHTTP   bool
 	Insecure    bool
 	Nydusify    bool
+	Token       string
 }
 
 func NewPush() *Push {

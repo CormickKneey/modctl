@@ -17,6 +17,7 @@
 package remote
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
@@ -37,6 +38,7 @@ type client struct {
 	plainHTTP bool
 	insecure  bool
 	proxy     string
+	token     string
 }
 
 func New(repo string, opts ...Option) (*remote.Repository, error) {
@@ -80,12 +82,30 @@ func New(repo string, opts ...Option) (*remote.Repository, error) {
 
 	repository.Client = &auth.Client{
 		Cache:      auth.NewCache(),
-		Credential: credentials.Credential(credStore),
+		Credential: Credential(credStore, client.token),
 		Client:     httpClient,
 	}
 
 	repository.PlainHTTP = client.plainHTTP
 	return repository, nil
+}
+
+// Credential returns a Credential() function that can be used by auth.Client.
+func Credential(store credentials.Store, token string) auth.CredentialFunc {
+	return func(ctx context.Context, hostport string) (auth.Credential, error) {
+		hostport = credentials.ServerAddressFromHostname(hostport)
+		if hostport == "" {
+			return auth.EmptyCredential, nil
+		}
+		cred, err := store.Get(ctx, hostport)
+		if err != nil {
+			cred = auth.EmptyCredential
+		}
+		if token != "" {
+			cred.AccessToken = token
+		}
+		return cred, err
+	}
 }
 
 func WithRetry(retry bool) Option {
@@ -109,5 +129,11 @@ func WithInsecure(insecure bool) Option {
 func WithPlainHTTP(plainHTTP bool) Option {
 	return func(c *client) {
 		c.plainHTTP = plainHTTP
+	}
+}
+
+func WithToken(token string) Option {
+	return func(c *client) {
+		c.token = token
 	}
 }

@@ -22,7 +22,7 @@ import (
 	"strings"
 	"syscall"
 
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 
 	"github.com/CloudNativeAI/modctl/pkg/backend"
 	"github.com/CloudNativeAI/modctl/pkg/config"
@@ -80,7 +80,7 @@ func runLogin(ctx context.Context, registry string) error {
 	// read password from stdin if password-stdin is set
 	if loginConfig.PasswordStdin && loginConfig.Password == "" {
 		fmt.Print("Enter password: ")
-		password, err := terminal.ReadPassword(syscall.Stdin)
+		password, err := term.ReadPassword(syscall.Stdin)
 		if err != nil {
 			return err
 		}

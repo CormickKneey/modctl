@@ -46,7 +46,7 @@ func (b *backend) Push(ctx context.Context, target string, cfg *config.Push) err
 
 	// create the src storage from the image storage path.
 	src := b.store
-	dst, err := remote.New(repo, remote.WithPlainHTTP(cfg.PlainHTTP), remote.WithInsecure(cfg.Insecure))
+	dst, err := remote.New(repo, remote.WithPlainHTTP(cfg.PlainHTTP), remote.WithInsecure(cfg.Insecure), remote.WithToken(cfg.Token))
 	if err != nil {
 		return fmt.Errorf("failed to create the destination: %w", err)
 	}

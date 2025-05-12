@@ -42,7 +42,7 @@ func (b *backend) Pull(ctx context.Context, target string, cfg *config.Pull) err
 	}
 
 	repo, tag := ref.Repository(), ref.Tag()
-	src, err := remote.New(repo, remote.WithPlainHTTP(cfg.PlainHTTP), remote.WithInsecure(cfg.Insecure), remote.WithProxy(cfg.Proxy))
+	src, err := remote.New(repo, remote.WithPlainHTTP(cfg.PlainHTTP), remote.WithInsecure(cfg.Insecure), remote.WithProxy(cfg.Proxy), remote.WithToken(cfg.Token))
 	if err != nil {
 		return fmt.Errorf("failed to create the remote client: %w", err)
 	}

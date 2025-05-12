@@ -36,6 +36,7 @@ type Pull struct {
 	Insecure          bool
 	ExtractDir        string
 	ExtractFromRemote bool
+	Token             string
 	Hooks             PullHooks
 	ProgressWriter    io.Writer
 }

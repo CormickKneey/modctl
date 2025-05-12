@@ -55,6 +55,7 @@ func init() {
 	flags.StringVar(&pullConfig.Proxy, "proxy", "", "use proxy for the pull operation")
 	flags.StringVar(&pullConfig.ExtractDir, "extract-dir", "", "specify the extract dir for extracting the model artifact")
 	flags.BoolVar(&pullConfig.ExtractFromRemote, "extract-from-remote", false, "turning on this flag will pull and extract the data from remote registry and no longer store model artifact locally, so user must specify extract-dir as the output directory")
+	flags.StringVar(&pullConfig.Token, "token", "", "specify the access token of repository for the pull operation")
 
 	if err := viper.BindPFlags(flags); err != nil {
 		panic(fmt.Errorf("bind cache pull flags to viper: %w", err))
